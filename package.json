@@ -1,0 +1,19 @@
+{
+  "name": "public-gcal",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jasmine": "^2.4.2",
+    "gulp-plumber": "^1.1.0"
+  },
+  "dependencies": {
+    "request": "^2.79.0"
+  }
+}
