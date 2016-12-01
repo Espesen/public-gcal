@@ -40,7 +40,10 @@ PublicGcal.prototype.getEvents = function (callback) {
     result = events.map(function (item) {
       return {
         summary: item.summary,
-        startDate: new Date(item.start.dateTime)
+        description: item.description ? item.description : '',
+        location: item.location ? item.location : '',
+        start: item.start,
+        end: item.end
       };
     });
 

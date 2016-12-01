@@ -1,7 +1,11 @@
 {
   "name": "public-gcal",
   "version": "0.0.1",
-  "description": "",
+  "description": "Fetch events from a public Google Calendar and return them in simplified JSON format",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Espesen/public-gcal"
+  },
   "main": "index.js",
   "scripts": {
     "test": "gulp test"
