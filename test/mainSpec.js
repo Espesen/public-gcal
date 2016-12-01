@@ -44,6 +44,14 @@ describe('constructor PublicGcal', function () {
       expect(result instanceof Array).toBeTruthy();
     });
 
+    it('should return error if Google returns error', function (done) {
+      new PublicGcal({ API_key: 'foo', calendarId: 'bar' }).getEvents(function (error, result) {
+        expect(error).toBeTruthy();
+        expect(error.toString()).toMatch(/keyinvalid/i);
+        done();
+      });
+    });
+
     describe('resulting array', function () {
 
       it('should contain events with summary (string) and start date (Date object)', function () {

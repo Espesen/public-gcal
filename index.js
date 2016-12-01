@@ -29,7 +29,13 @@ PublicGcal.prototype.getEvents = function (callback) {
       return callback(error);
     }
 
-    var events = JSON.parse(data).items;
+    data = JSON.parse(data);
+
+    if ('error' in data) {
+      return callback(new Error('Error from Google: ' + JSON.stringify(data.error.errors)));
+    }
+
+    var events = data.items;
 
     result = events.map(function (item) {
       return {
