@@ -26,6 +26,8 @@ describe('constructor PublicGcal', function () {
 
   describe('method getEvents', function () {
 
+    // TODO: test options
+
     var gcal
       , result;
 
@@ -34,6 +36,7 @@ describe('constructor PublicGcal', function () {
       if (!result) {
         gcal.getEvents(function (err, data) {
           if (err) {
+            expect(err).toBeUndefined();
             return done(err);
           }
           result = data;
