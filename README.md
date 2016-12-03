@@ -22,7 +22,7 @@ gcal.getEvents(function (error, result) {
 
 Method `getEvents(options, callback)` accepts following options:
 - `singleEvents`: defaults to true. Expand recurring events to single instances.
-- `orderBy`: defaults to `startTime`. Is ignored if `singleEvents` is false. See (Google Calendar API)[https://developers.google.com/google-apps/calendar/v3/reference/events/list])
+- `orderBy`: defaults to `startTime`. Is ignored if `singleEvents` is false. See [Google Calendar API](https://developers.google.com/google-apps/calendar/v3/reference/events/list)
 - `timeMin`, `timeMax`: query date limits. Must be an RFC3339 timestamp with mandatory time zone offset, e.g., 2011-06-03T10:00:00-07:00
 - `q`: query string
  
