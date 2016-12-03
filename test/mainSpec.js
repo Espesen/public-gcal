@@ -48,6 +48,39 @@ describe('constructor PublicGcal', function () {
       }
     });
 
+    describe('options:', function () {
+
+      describe('singleEvents', function () {
+
+        function testCount(data, comparison, expectedCount) {
+          var filterFunc = function (item) {
+            return (item.summary.match(/infinite/i));
+          };
+          if (comparison === 'moreThan') {
+            expect(data.filter(filterFunc).length).toBeGreaterThan(expectedCount);
+          }
+          else {
+            expect(data.filter(filterFunc).length).toBe(expectedCount);
+          }
+        }
+
+        it('should default to true', function () {
+          testCount(result, 'moreThan', 1);
+        });
+
+        it('should not expand recurring events if false', function (done) {
+          gcal.getEvents({ singleEvents: false}, function (err, data) {
+            expect(err).toBeNull();
+            if (!err) {
+              testCount(data, 'exactly', 2);
+            }
+            done();
+          });
+        });
+      });
+
+    });
+
     it('should return array of events', function () {
       expect(result instanceof Array).toBeTruthy();
     });

@@ -58,7 +58,11 @@ PublicGcal.prototype.getEvents = function (options, callback) {
   if (options.timeMin) { url = url + '&timeMin=' + options.timeMin; }
   if (options.timeMax) { url = url + '&timeMax=' + options.timeMax; }
   if (options.q) { url = url + '&q=' + options.q; }
-  if (options.orderBy) { url = url + '&orderBy=' + options.orderBy; }
+  if (options.orderBy) {
+    if (options.singleEvents || options.orderBy === 'updated') {
+      url = url + '&orderBy=' + options.orderBy;
+    }
+  }
 
   var result = [];
 
