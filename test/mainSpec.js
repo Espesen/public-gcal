@@ -79,6 +79,59 @@ describe('constructor PublicGcal', function () {
         });
       });
 
+      function errorTestCallback(done) {
+        return function (error) {
+          expect(error.message).toMatch(/must be an rfc3339 timestamp/i);
+          done();
+        };
+      }
+
+      function checkEventDates(data, comparison, date) {
+
+        function getStartDate(event) {
+          return (event.start.date ? new Date(event.start.date) : new Date(event.start.dateTime));
+        }
+
+        expect(data.filter(function (item) {
+          if (comparison === 'after') {
+            return getStartDate(item) < date;
+          }
+          else {
+            return getStartDate(item) > date;
+          }
+        }).length).toBe(0);
+      }
+
+      describe('timeMin', function () {
+        it('should return error', function (done) {
+          gcal.getEvents({ timeMin: '2016-12-10' }, errorTestCallback(done));
+        });
+
+        it('should omit events before given time', function (done) {
+          var dateString = '2016-12-03T10:00:00-07:00';
+          gcal.getEvents({ timeMin: dateString }, function (err, data) {
+            expect(err).toBeNull();
+            checkEventDates(data, 'after', new Date(dateString));
+            done();
+          });
+        });
+      });
+
+      describe('timeMax', function () {
+        it('should return error', function (done) {
+          gcal.getEvents({ timeMax: '2016-12-10' }, errorTestCallback(done));
+        });
+
+        it('should omit events after given time', function (done) {
+          var dateString = '2016-12-03T10:00:00-07:00';
+          gcal.getEvents({ timeMax: dateString }, function (err, data) {
+            expect(err).toBeNull();
+            checkEventDates(data, 'before', new Date(dateString));
+            done();
+          });
+        });
+      });
+
     });
 
     it('should return array of events', function () {
