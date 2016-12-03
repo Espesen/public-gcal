@@ -1,5 +1,7 @@
 var request = require('request');
-var moment = require('moment');
+
+// Credits to https://gist.github.com/marcelotmelo/b67f58a08bee6c2468f8
+var RFC_3339_regex = /^([0-9]+)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])[Tt]([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]|60)(\.[0-9]+)?(([Zz])|([\+|\-]([01][0-9]|2[0-3]):[0-5][0-9]))$/;
 
 function PublicGcal(options) {
 
@@ -31,24 +33,24 @@ PublicGcal.prototype.getEvents = function (options, callback) {
   options.singleEvents = ("singleEvents" in options) ? options.singleEvents : true; // default true
   options.orderBy = options.orderBy || 'startTime';
 
-  if (options.timeMin && !moment(options.timeMin).isUTC()) {
-    callback(new Error('timeMin must be an RFC3339 timestamp with mandatory time zone offset, e.g., 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z.'));
+  if (options.timeMin && !options.timeMin.match(RFC_3339_regex)) {
+    return callback(new Error('timeMin must be an RFC3339 timestamp with mandatory time zone offset, e.g., 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z.'));
   }
 
-  if (options.timeMax && !moment(options.timeMax).isUTC()) {
-    callback(new Error('timeMax must be an RFC3339 timestamp with mandatory time zone offset, e.g., 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z.'));
+  if (options.timeMax && !options.timeMax.match(RFC_3339_regex)) {
+    return callback(new Error('timeMax must be an RFC3339 timestamp with mandatory time zone offset, e.g., 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z.'));
   }
 
   if (options.q && typeof options.q !== 'string') {
-    callback(new Error('q must be a string!'));
+    return callback(new Error('q must be a string!'));
   }
 
   if (options.orderBy && options.orderBy !== 'startTime' && options.orderBy !== 'updated') {
-    callback(new Error('orderBy must be either \'startTime\' or \'updated\'!'));
+    return callback(new Error('orderBy must be either \'startTime\' or \'updated\'!'));
   }
 
   if (options.singleEvents && typeof options.singleEvents !== 'boolean') {
-    callback(new Error('singleEvents must be boolean!'));
+    return callback(new Error('singleEvents must be boolean!'));
   }
 
   var url = 'https://www.googleapis.com/calendar/v3/calendars/' +this.calendarId +
