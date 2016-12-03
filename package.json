@@ -1,6 +1,6 @@
 {
   "name": "public-gcal",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Fetch events from a public Google Calendar and return them in simplified JSON format",
   "repository": {
     "type": "git",
