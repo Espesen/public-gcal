@@ -1,6 +1,7 @@
 var gulp = require('gulp')
   , jasmine = require('gulp-jasmine')
-  , plumber = require('gulp-plumber');
+  , plumber = require('gulp-plumber')
+  , jshint = require('gulp-jshint');
 
 gulp.task('test', function () {
   gulp.src('test/*.js')
@@ -8,8 +9,15 @@ gulp.task('test', function () {
     .pipe(jasmine());
 });
 
-gulp.task('watch', function () {
-  gulp.watch(['test/*.js', 'index.js'], ['test']);
+gulp.task('jshint', function () {
+  gulp.src(['test/*.js', 'index.js'])
+    .pipe(plumber())
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+});
+
+gulp.task('watch', ['jshint', 'test'], function () {
+  gulp.watch(['test/*.js', 'index.js'], ['jshint', 'test']);
 });
 
 // TODO: add jshint

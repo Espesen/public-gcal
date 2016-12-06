@@ -156,7 +156,7 @@ describe('constructor PublicGcal', function () {
                   new Date(result[index + 1].start.dateTime) : new Date(result[index + 1].start.date);
             expect(startDate.toISOString()).not.toBeGreaterThan(startDateOfNextItem.toISOString());
           }
-        })
+        });
       });
 
       it('should have all the instances of repeating events in it', function () {

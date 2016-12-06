@@ -17,6 +17,7 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-jasmine": "^2.4.2",
+    "gulp-jshint": "^2.0.4",
     "gulp-plumber": "^1.1.0",
     "publish-please": "^2.2.0"
   },
