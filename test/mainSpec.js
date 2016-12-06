@@ -1,5 +1,7 @@
 var PublicGcal = require('../index.js')
-  , API_key = require('./API_key.js');
+  , API_key = require('./API_key.js')
+  , request = require('request')
+  , sinon = require('sinon');
 
 // data in sample calendar
 var repeatingEvents = [
@@ -25,8 +27,6 @@ describe('constructor PublicGcal', function () {
   });
 
   describe('method getEvents', function () {
-
-    // TODO: test options
 
     var gcal
       , result;
@@ -132,6 +132,48 @@ describe('constructor PublicGcal', function () {
         });
       });
 
+      describe('orderBy', function () {
+
+        it('should accept only "startTime" and "updated"', function (done) {
+
+          var count = 0;
+
+          function testCount() {
+            count++;
+            if (count === 2) {
+              done();
+            }
+          }
+
+          gcal.getEvents({ orderBy: 'startTime' }, function (err) {
+            expect(err).toBeNull();
+            testCount();
+          });
+
+          gcal.getEvents({ orderBy: 'foo' }, function (err) {
+            expect(err.message).toMatch(/orderby must be either \'starttime\' or \'updated\'/i);
+            testCount();
+          });
+
+        });
+
+        describe('value startTime', function () {
+
+          afterEach(function () {
+            request.get.restore();
+          });
+
+          it('should be ignored if singleEvents is false', function () {
+            sinon.stub(request, 'get');
+            gcal.getEvents({ orderBy: 'startTime', singleEvents: false }, function () {});
+            expect(request.get.callCount).toBe(1);
+            expect(request.get.firstCall.args[0]).not.toMatch(/singleevents=true/i);
+            expect(request.get.firstCall.args[0]).not.toMatch(/orderby=starttime/i);
+          });
+        });
+        
+      });
+
     });
 
     it('should return array of events', function () {
@@ -215,7 +257,6 @@ describe('constructor PublicGcal', function () {
         it('should contain end object', function () {
           expect(testElements('end', 'object')).toBeFalsy();
         });
-
 
       });
 

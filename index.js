@@ -68,7 +68,7 @@ PublicGcal.prototype.getEvents = function (options, callback) {
 
   var result = [];
 
-  request(url, function (error, response, data) {
+  request.get(url, function (error, response, data) {
     if (error) {
       return callback(error);
     }
