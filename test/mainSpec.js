@@ -69,7 +69,7 @@ describe('constructor PublicGcal', function () {
         });
 
         it('should not expand recurring events if false', function (done) {
-          gcal.getEvents({ singleEvents: false}, function (err, data) {
+          gcal.getEvents({ singleEvents: false }, function (err, data) {
             expect(err).toBeNull();
             if (!err) {
               testCount(data, 'exactly', 2);

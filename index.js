@@ -81,7 +81,9 @@ PublicGcal.prototype.getEvents = function (options, callback) {
 
     var events = data.items;
 
-    result = events.map(function (item) {
+    result = events.filter(function (item) {
+      return item.status && !item.status.match(/cancelled/i);
+    }).map(function (item) {
       return {
         summary: item.summary,
         description: item.description ? item.description : '',
